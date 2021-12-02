@@ -5,6 +5,6 @@
         "module": "esnext",
         "sourceMap": true,
         "strict": true,
-        "outDir": "./build"
-    }
+        "outDir": "./build",
+    },
 }
