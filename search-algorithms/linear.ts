@@ -1,19 +1,18 @@
-import { Airport } from '../models/Airport';
-import { ISearchAlgorithm } from './ISearchAlgorithm';
+import { ISearchAlgorithm } from "./ISearchAlgorithm";
 
 export class LinearSearch implements ISearchAlgorithm {
-    search(array: Airport[], searchValue: string, field: keyof Airport = 'name'): Airport[] {
-        const startTime = performance.now();
-        const foundAirports: Airport[] = [];
+    search<T extends object, U extends keyof T>(
+        array: T[],
+        searchValue: any,
+        field: U
+    ): T[] {
+        const foundObjects: T[] = [];
 
         for (let i = 0; i < array.length; i++) {
             if (array[i][field] === searchValue) {
-                foundAirports.push(array[i]);
+                foundObjects.push(array[i]);
             }
         }
-
-        console.log(`Linear search spent: ${startTime - performance.now()} to find ${foundAirports.length} entries.`);
-
-        return foundAirports;
+        return foundObjects;
     }
 }

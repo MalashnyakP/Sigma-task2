@@ -1,5 +1,7 @@
-import { Airport } from '../models/Airport';
-
 export interface ISearchAlgorithm {
-    search(array: Airport[], searchValue: string, field?: keyof Airport): Airport[];
+    search<T extends object, U extends keyof T>(
+        array: T[],
+        searchValue: string,
+        field: U
+    ): T[];
 }

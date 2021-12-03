@@ -1,12 +1,12 @@
-import { Airport } from '../models/Airport';
-import { ISearchAlgorithm } from './ISearchAlgorithm';
+import { ISearchAlgorithm } from "./ISearchAlgorithm";
 
 export class BinarySearch implements ISearchAlgorithm {
-    search(array: Airport[], searchValue: string, field: keyof Airport = 'name'): Airport[] {
-        const startTime = performance.now();
-        let foundAirports: Airport[] = [];
-        array = array.slice();
-
+    search<T extends object, U extends keyof T>(
+        array: T[],
+        searchValue: any,
+        field: U
+    ): T[] {
+        let foundAirports: T[] = [];
         const lowerBound = this.findLowerBound(array, searchValue, field);
         const upperBound = this.findUpperBound(array, searchValue, field);
 
@@ -18,12 +18,14 @@ export class BinarySearch implements ISearchAlgorithm {
             foundAirports = [array[lowerBound]];
         }
 
-        console.log(`Binary search spent: ${startTime - performance.now()} to find ${foundAirports.length} entries.`);
-
         return foundAirports;
     }
 
-    private findUpperBound(array: Airport[], searchValue: string, field: keyof Airport): number {
+    private findUpperBound<T extends object, U extends keyof T>(
+        array: T[],
+        searchValue: any,
+        field: U
+    ): number {
         let left = 0;
         let right = array.length - 1;
 
@@ -44,7 +46,11 @@ export class BinarySearch implements ISearchAlgorithm {
         return right;
     }
 
-    private findLowerBound(array: Airport[], searchValue: string, field: keyof Airport): number {
+    private findLowerBound<T extends object, U extends keyof T>(
+        array: T[],
+        searchValue: any,
+        field: U
+    ): number {
         let left = 0;
         let right = array.length - 1;
 
