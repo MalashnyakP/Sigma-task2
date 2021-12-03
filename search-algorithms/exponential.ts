@@ -1,12 +1,12 @@
-import { Airport } from '../models/Airport';
-import { ISearchAlgorithm } from './ISearchAlgorithm';
+import { ISearchAlgorithm } from "./ISearchAlgorithm";
 
 export class ExponentialSearch implements ISearchAlgorithm {
-    search(array: Airport[], searchValue: string, field: keyof Airport = 'name'): Airport[] {
-        const startTime = performance.now();
-        const foundAirports: Airport[] = [];
-
-        array = array.slice();
+    search<T extends object, U extends keyof T>(
+        array: T[],
+        searchValue: any,
+        field: U
+    ): T[] {
+        const foundAirports: T[] = [];
 
         while (array[0][field] === searchValue) {
             foundAirports.push(array[0]);
@@ -18,16 +18,26 @@ export class ExponentialSearch implements ISearchAlgorithm {
             i *= 2;
         }
 
-        foundAirports.push(...this.binarySearch(array, i/2, Math.min(i, array.length - 1), searchValue, field));
-
-
-        console.log(`Exponential search spent: ${startTime - performance.now()} to find ${foundAirports.length} entries.`);
+        foundAirports.push(
+            ...this.binarySearch(
+                array,
+                i / 2,
+                Math.min(i, array.length - 1),
+                searchValue,
+                field
+            )
+        );
 
         return foundAirports;
-
     }
 
-    private binarySearch(array: Airport[], left: number, right: number, searchValue: string, field: keyof Airport): Airport[] {
+    private binarySearch<T extends object, U extends keyof T>(
+        array: T[],
+        left: number,
+        right: number,
+        searchValue: any,
+        field: U
+    ): T[] {
         const subArray = array.slice(left, right);
 
         const lowerBound = this.findLowerBound(subArray, searchValue, field);
@@ -44,7 +54,11 @@ export class ExponentialSearch implements ISearchAlgorithm {
         return subArray.slice(lowerBound, upperBound);
     }
 
-    private findUpperBound(array: Airport[], searchValue: string, field: keyof Airport): number {
+    private findUpperBound<T extends object, U extends keyof T>(
+        array: T[],
+        searchValue: any,
+        field: U
+    ): number {
         let left = 0;
         let right = array.length - 1;
 
@@ -65,7 +79,11 @@ export class ExponentialSearch implements ISearchAlgorithm {
         return right;
     }
 
-    private findLowerBound(array: Airport[], searchValue: string, field: keyof Airport): number {
+    private findLowerBound<T extends object, U extends keyof T>(
+        array: T[],
+        searchValue: any,
+        field: U
+    ): number {
         let left = 0;
         let right = array.length - 1;
 

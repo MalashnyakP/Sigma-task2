@@ -1,18 +1,19 @@
-import { ISortAlgorithm } from './ISortAlgorithm';
-import { Airport } from '../models/Airport';
+import { ISortAlgorithm } from "./ISortAlgorithm";
 
 export class MergeSort implements ISortAlgorithm {
-    public sort(array: Airport[], field: keyof Airport, order: string = 'asc'): void {
-        const start = performance.now();
-
-        array = array.slice();
-
-        array = this.mergeSort(array, field, order);
-
-        console.log(`Merge sort spent: ${performance.now() - start} milliseconds.`);
+    public sort<T extends object, U extends keyof T>(
+        array: T[],
+        field: U,
+        order: string = "asc"
+    ): void {
+        array = MergeSort.mergeSort(array, field, order);
     }
 
-    private mergeSort(array: Airport[], field: keyof Airport, order: string): Airport[] {
+    private static mergeSort<T extends object, U extends keyof T>(
+        array: T[],
+        field: U,
+        order: string
+    ): T[] {
         if (array.length < 2) {
             return array;
         }
@@ -21,18 +22,33 @@ export class MergeSort implements ISortAlgorithm {
         const leftHalf = array.slice(0, halfIndex);
         const rightHalf = array.slice(halfIndex);
 
-        return this.merge(this.mergeSort(leftHalf, field, order),this.mergeSort(rightHalf, field, order), field, order);
+        return MergeSort.merge(
+            MergeSort.mergeSort(leftHalf, field, order),
+            MergeSort.mergeSort(rightHalf, field, order),
+            field,
+            order
+        );
     }
 
-    private merge(left: Airport[], right: Airport[], field: keyof Airport, order: string): Airport[] {
-        let array: Airport[] = [];
-        let i: number = 0, j: number = 0;
+    private static merge<T extends object, U extends keyof T>(
+        left: T[],
+        right: T[],
+        field: U,
+        order: string
+    ): T[] {
+        let array: T[] = [];
+        let i: number = 0,
+            j: number = 0;
 
         while (i < left.length && j < right.length) {
-            if (order === 'desc') {
-                array.push(left[i][field] > right[j][field] ? left[i++] : right[j++]);
+            if (order === "desc") {
+                array.push(
+                    left[i][field] > right[j][field] ? left[i++] : right[j++]
+                );
             } else {
-                array.push(left[i][field] < right[j][field] ? left[i++] : right[j++]);
+                array.push(
+                    left[i][field] < right[j][field] ? left[i++] : right[j++]
+                );
             }
         }
 

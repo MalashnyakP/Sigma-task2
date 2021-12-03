@@ -1,5 +1,7 @@
-import { Airport } from '../models/Airport';
-
 export interface ISortAlgorithm {
-    sort(array: Airport[], field: string, order?: string): void;
+    sort<T extends object, U extends keyof T>(
+        array: T[],
+        field: U,
+        order?: string
+    ): void;
 }
