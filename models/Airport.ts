@@ -1,3 +1,3 @@
 export interface Airport {
-    [key: string]: string,
+    [key: string]: string;
 }
